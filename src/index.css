@@ -1,0 +1,19 @@
+/* index.css */
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000; /* optional retro background */
+  font-family: 'Press Start 2P', monospace;
+  overflow: hidden;
+}
+
+/* Optional reset */
+* {
+  box-sizing: border-box;
+}

@@ -1,0 +1,291 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+body {
+  margin: 0;
+  background: #000;
+  font-family: 'Press Start 2P', monospace;
+  overflow-x: hidden;
+  color: #0ff;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url("https://media.giphy.com/media/oEI9uBYSzLpBK/giphy.gif") center center / cover;
+  opacity: 0.05;
+  pointer-events: none;
+  z-index: -1;
+  animation: flicker 0.15s infinite;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.015),
+    rgba(0, 0, 0, 0.02) 2px
+  );
+  pointer-events: none;
+  z-index: -1;
+  opacity: 0.15;
+}
+
+@keyframes flicker {
+  0% { opacity: 0.04; }
+  50% { opacity: 0.06; }
+  100% { opacity: 0.04; }
+}
+
+.retro-app {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  padding: 2rem;
+  text-align: center;
+}
+
+.retro-title {
+  font-size: 2rem;
+  color: #0ff;
+  text-shadow: 0 0 2px #0ff, 0 0 4px #0ff, 0 0 6px #0ff;
+  animation: titleGlow 2s ease-in-out infinite alternate;
+  margin-bottom: 1rem;
+}
+
+@keyframes titleGlow {
+  from {
+    text-shadow: 0 0 2px #0ff;
+  }
+  to {
+    text-shadow: 0 0 8px #0ff, 0 0 12px #0ff;
+  }
+}
+
+.retro-score {
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tv-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin: 2rem 0;
+  width: 100%;
+}
+
+.tv-wrapper {
+  width: 160px;
+  flex-shrink: 0;
+}
+
+.tv-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  display: block;
+}
+
+.tv-screen,
+.tv-overlay {
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  width: 60%;
+  height: 58%;
+}
+
+.tv-screen {
+  z-index: 1;
+  border-radius: 0;
+  transition: background 0.3s, box-shadow 0.3s;
+  animation: tvBlinkGlow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3);
+}
+
+.tv-screen.red { background: #ff1a1a; }
+.tv-screen.green { background: #33ff33; }
+.tv-screen.blue { background: #3399ff; }
+.tv-screen.yellow { background: #ffff66; }
+
+.tv-screen.red.active   { animation: blink-red 0.4s ease-in-out; }
+.tv-screen.green.active { animation: blink-green 0.4s ease-in-out; }
+.tv-screen.blue.active  { animation: blink-blue 0.4s ease-in-out; }
+.tv-screen.yellow.active{ animation: blink-yellow 0.4s ease-in-out; }
+
+@keyframes blink-red {
+  0%, 100% { box-shadow: inset 0 0 8px rgba(0,0,0,0.3); }
+  50%      { box-shadow: 0 0 30px 10px red; }
+}
+@keyframes blink-green {
+  0%, 100% { box-shadow: inset 0 0 8px rgba(0,0,0,0.3); }
+  50%      { box-shadow: 0 0 30px 10px limegreen; }
+}
+@keyframes blink-blue {
+  0%, 100% { box-shadow: inset 0 0 8px rgba(0,0,0,0.3); }
+  50%      { box-shadow: 0 0 30px 10px dodgerblue; }
+}
+@keyframes blink-yellow {
+  0%, 100% { box-shadow: inset 0 0 8px rgba(0,0,0,0.3); }
+  50%      { box-shadow: 0 0 30px 10px gold; }
+}
+
+.tv-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.tv-overlay {
+  z-index: 3;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.05) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tv-container:hover .tv-overlay {
+  opacity: 0.2;
+  animation: staticFlicker 0.15s infinite;
+}
+
+@keyframes staticFlicker {
+  0%   { opacity: 0.15; }
+  50%  { opacity: 0.3; }
+  100% { opacity: 0.15; }
+}
+
+.retro-button {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.8rem;
+  padding: 10px 20px;
+  border-radius: 6px;
+  text-shadow: 0 0 4px #0ff;
+  margin-top: 2rem;
+}
+
+.tv-screen.idle {
+  animation: idleFlicker 2.5s infinite;
+  opacity: 0.1;
+}
+
+@keyframes idleFlicker {
+  0%, 100% {
+    opacity: 0.1;
+  }
+  30% {
+    opacity: 0.2;
+  }
+  60% {
+    opacity: 0.15;
+  }
+}
+
+.crt-scanlines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.015),
+    rgba(255, 255, 255, 0.015) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index: 9999;
+  mix-blend-mode: overlay;
+  animation: scanScroll 10s linear infinite;
+}
+
+@keyframes scanScroll {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 0 100%;
+  }
+}
+
+@keyframes tvClickZap {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  25% {
+    transform: scale(1.05);
+    filter: brightness(1.4) contrast(1.2);
+  }
+  50% {
+    transform: scale(0.97);
+    filter: brightness(0.8) contrast(0.8);
+  }
+  75% {
+    transform: scale(1.02);
+    filter: brightness(1.2);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+.tv-screen.clicked {
+  animation: tvClickZap 0.25s ease-out;
+  z-index: 2;
+}
+
+@keyframes tvBlinkGlow {
+  0% {
+    opacity: 0.6;
+    filter: brightness(1.2) drop-shadow(0 0 5px white);
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    filter: brightness(2.2) drop-shadow(0 0 20px white);
+    transform: scale(1.03);
+  }
+  100% {
+    opacity: 0.6;
+    filter: brightness(1.2);
+    transform: scale(1);
+  }
+}
+
+.tv-screen.active {
+  animation: tvBlinkGlow 0.5s ease-in-out;
+  z-index: 1;
+}
